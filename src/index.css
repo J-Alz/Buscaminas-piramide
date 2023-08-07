@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+body{
+  margin: 0;
+  font-family: 'Ubuntu';
+}
+.board{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+}
+h1{
+  margin: 0;
+}
+.title{
+  height: 10%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(17, 17, 102);
+  color: white;
+}
+.form{
+  display: flex;
+  background-color: rgb(69, 69, 172);
+  justify-content: center;
+  column-gap: 20px;
+  height: 10%;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+}
+label{
+  margin-right: 10px;
+}
+input{
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px 5px;
+  width: 50px;
+}
+button{
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px 15px;
+}
+button:hover{
+  background-color: blue;
+  color: white;
+}
+.table{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(130, 130, 214);
+  width: 100%;
+  height: 100%;
+}
+.terrain{
+  display: grid;
+}
+
+.cell{
+  position: absolute;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+.cell0{
+  position: relative;
+}
+.cellz{
+  position: absolute;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  background-color: rgba(117, 117, 40, 0.253);
+}
+.visible{
+  background-color: greenyellow;
+}
+.c0{
+  background-color: rgb(188, 188, 250);
+}
+.c1{
+  background-color: #FCE4D6;
+}
+.X{
+  background-color: red;
+}
+
+.invisible{
+  background-color: rgb(130, 130, 214);
+  cursor: auto;
+}
