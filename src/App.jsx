@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Square } from './components/Square';
 import { DIRECTIONS } from './constans';
+import { saveGameToStorage } from './storage';
 
 
 
@@ -14,9 +15,22 @@ function App() {
   const gridRows = 'repeat('+ rows +',50px)'
   const gridColumns = 'repeat('+cols+',50px)'
 
+  /*
+  const handleRows = (event) => {
+    event.preventDefault();
+    setRows(event.target.value)
+  }
+  const handleMines = (event) => {
+    event.preventDefault();
+    setMines(event.target.value)
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+  }*/
+
   function getNextValue(value) {
-    const numericValue = parseInt(value, 10);
-    return (numericValue >= 0 && numericValue < 8) ? (numericValue + 1).toString() : value;
+    return (value.value >= 0 && value.value < 8) ? { value: value.value + 1, visible: value.visible } : value;
   }
 
   function wrapCell(grid, x, y) {
@@ -31,68 +45,70 @@ function App() {
     }
   }
 
-  const createMatrix = (() => {
-    let grid = Array(rows).fill(null).map(() => Array(cols).fill('0'))
-    let minesPlaced = 0;    
 
-    //console.log('partida')
-    while(minesPlaced < mines){
-      const x = Math.floor(Math.random() * cols)
-      const y = Math.floor(Math.random() * rows)
-      if(x >= cellMiddle - y && x <= cellMiddle + y ){
-        if(grid[y][x] !== 'X'){
-          //console.log(x + '.' + y)
-          grid[y][x] = 'X'          
-          wrapCell(grid,x,y)
-          minesPlaced++
+  const createMatrix = (() => {
+    let grid = Array(rows).fill(null).map(() => Array(cols).fill({ value: 0, visible: false }));
+    let minesPlaced = 0;
+  
+    while (minesPlaced < mines) {
+      const x = Math.floor(Math.random() * cols);
+      const y = Math.floor(Math.random() * rows);
+      if (x >= cellMiddle - y && x <= cellMiddle + y) {
+        if (!grid[y][x].visible) {
+          grid[y][x] = { value: 'X', visible: false };
+          wrapCell(grid, x, y);
+          minesPlaced++;
         }
       }
     }
-    return grid
-  })
+    return grid;
+  })();
   
  
-  const [matrix, setMatrix] = useState(createMatrix());
+  const [matrix, setMatrix] = useState(()=>{
+    const matrixFromStorage = window.localStorage.getItem('matrix')
+    return matrixFromStorage
+      ? JSON.parse(matrixFromStorage)
+      : createMatrix
+  });
 
-  const VisibleCell = ((x,y) => {
+  const EnabledCells = (x, y) => x >= cellMiddle - y && x <= cellMiddle + y;
 
-    return (x >= cellMiddle - y && x <= cellMiddle + y )
-    //? true
-    //: false
-  })
 
   const updateMatrix = (x,y) =>{
     const newMatrix = [...matrix]
     //newMatrix[x,y] 
-    console.log(newMatrix[y][x])//<--here
+    console.log('x:' + x + ' y: ' + y)
+    newMatrix[y][x] = {value:matrix[y][x].value, visible:true}
+    console.log(newMatrix[y][x].visible)//<--here
+    setMatrix(newMatrix)
 
-    for (const [dx, dy] of DIRECTIONS) {
-      const newX = x + dx;
-      const newY = y + dy;
-      if (newX >= 0 && newX < cols && newY >= 0 && newY < rows){
-        console.log()
-      }
-    }
-    return true
+    saveGameToStorage({
+      matrix:newMatrix
+    })
   }
 
-  
+  const resetGame = () => {
+
+    //setMatrix(createMatrix)
+    
+  }
 
   return (
     <main className="board">
       <div className='title'>
         <h1>Buscaminas</h1>
       </div>
-      <form action="" className='form'>
+      <form className='form'>
         <div>
           <label htmlFor="">Altura:</label>
-          <input type="number" min="3" max="10"/>
+          <input type="number" min="3" max="10" />
         </div>
         <div>
           <label htmlFor="">Minas</label>
           <input type="number" />
         </div>
-        <button>Nuevo Juego</button>
+        <button type='submit' value="Submit">Nuevo Juego</button>
       </form>
       <section className="table">
         <div className='terrain' style={{gridTemplateRows: gridRows, gridTemplateColumns: gridColumns}}>
@@ -103,13 +119,15 @@ function App() {
                 return(
                   <Square 
                     key={`${x}${y}`} 
-                    enabled={VisibleCell(x,y)} 
+                    enabled={EnabledCells(x,y)} 
                     updateMatrix={updateMatrix} 
                     x={x} y={y}
-                    color={cell}
+                    color={cell.value}
+                    visible={cell.visible}
+                    cellMiddle={cellMiddle}
                   >
                     <small>[{x}][{y}]</small>
-                    {cell}
+                    {cell.value}
                   </Square>
                 )
               })

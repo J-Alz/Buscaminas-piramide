@@ -1,32 +1,22 @@
 import { useState } from "react"
 
 
-export const Square = ({children, enabled, updateMatrix, x, y, color }) => {
-	const [visible,setVisible] = useState(enabled)
-	let ClassName = `cell ${enabled?'visible':'invisible'}`
+export const Square = ({children, enabled,visible, updateMatrix, x, y, color }) => {
 
-	if(color === '0'){
-		ClassName += ' c0'
-	}
-	if(color === '1')
-		ClassName += ' c1'
-	if(color === 'X')
-		ClassName += ' X'
+	const classCell = `cell ${enabled?'visible':'invisible'}  c${color} ${color === 'X' ? 'X' : ''}`;
 
-	const on = () => {
-		setVisible(!visible)
-	}
+	//console.log(visible)
 
 	const handleClick = () => {
-		on()
 		enabled && updateMatrix(x,y)
 	}
+
 	return (
 		<div className="cell0">
-			<div  className={ClassName}>
+			<div  className={classCell}>
 				{enabled && children}
 			</div>
-			<div className={visible && 'cellz'} onClick={handleClick}>
+			<div  className={`${enabled?'cellz':''} ${visible?'act':''}`  } onClick={handleClick}>
 
 			</div>
 		</div>

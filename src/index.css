@@ -84,7 +84,7 @@ button:hover{
   align-items: center;
   flex-direction: column;
   cursor: pointer;
-  background-color: rgba(117, 117, 40, 0.253);
+  background-color: rgba(117, 117, 40, 0.637);
 }
 .visible{
   background-color: greenyellow;
@@ -97,6 +97,9 @@ button:hover{
 }
 .X{
   background-color: red;
+}
+.act{
+  background-color: transparent !important;
 }
 
 .invisible{
