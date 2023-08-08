@@ -140,6 +140,7 @@ function App() {
   const ResetGame = (event) => {
     event.preventDefault();
     setBtn(false)
+    setFail(false)
     const newRows = parseInt(rows);
     const newMines = parseInt(mines);
     if (!isNaN(newMines) && !isNaN(newRows)) {
