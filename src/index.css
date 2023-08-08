@@ -149,9 +149,9 @@ button:hover{
 .gameOver{
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  background-color: rgb(130, 130, 214);
-  width: 100%;
+  width: 50%;
+  margin-left:  100px;
   z-index: 3;
 }
