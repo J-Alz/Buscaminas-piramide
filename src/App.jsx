@@ -13,23 +13,11 @@ function App() {
   const calcCellMiddle = () => (cols - 1) / 2
   const [cellMiddle,setCellMiddle] = useState(calcCellMiddle)
   const [mines, setMines] = useState(7)
+  const [winner,setWinner] = useState(false)
 
   const gridRows = 'repeat('+ rows +',50px)'
   const gridColumns = 'repeat('+cols+',50px)'
 
-  /*
-  const handleRows = (event) => {
-    event.preventDefault();
-    setRows(event.target.value)
-  }
-  const handleMines = (event) => {
-    event.preventDefault();
-    setMines(event.target.value)
-  }
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-  }*/
 
   function getNextValue(value) {
     return (value.value >= 0 && value.value < 8) ? { value: value.value + 1, visible: value.visible } : value;
@@ -76,18 +64,45 @@ function App() {
 
   const EnabledCells = (x, y) => x >= cellMiddle - y && x <= cellMiddle + y;
 
+  const listCell = [];
+
+  function checkAdjacentCells(row, col, grid) {
+    listCell.push({ x: col, y: row });
+
+    for (const [dx, dy] of DIRECTIONS) {
+      const newRow = row + dx;
+      const newCol = col + dy;
+      if (
+        newRow >= 0 &&
+        newRow < rows &&
+        newCol >= 0 &&
+        newCol < cols &&
+        !listCell.some((elemento) => elemento.x === newCol && elemento.y === newRow) &&
+        grid[newRow][newCol].value !== 'X'
+      ) {
+        if (grid[newRow][newCol].value === grid[row][col].value) {
+          grid[newRow][newCol].visible = true;
+          checkAdjacentCells(newRow, newCol, grid);
+        }
+      }
+    }
+    return grid;
+  }
+
 
   const updateMatrix = (x,y) =>{
-    const newMatrix = [...matrix]
-    //newMatrix[x,y] 
+    let newMatrix = [...matrix]
     console.log('x:' + x + ' y: ' + y)
     newMatrix[y][x] = {value:matrix[y][x].value, visible:true}
-    console.log(newMatrix[y][x].visible)//<--here
+    console.log(newMatrix[y][x].visible)
+    newMatrix = checkAdjacentCells(y,x,newMatrix)//<--here
     setMatrix(newMatrix)
-
     saveGameToStorage({
       matrix:newMatrix
     })
+
+    if(matrix[y][x].value === 'X')
+      setWinner(true)
   }
 
   const ResetGame = () => {
@@ -134,7 +149,7 @@ function App() {
                     x={x} y={y}
                     color={cell.value}
                     visible={cell.visible}
-                    cellMiddle={cellMiddle}
+                    winner={winner}
                   >
                     <small>[{x}][{y}]</small>
                     {cell.value}

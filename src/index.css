@@ -72,10 +72,10 @@ button:hover{
   flex-direction: column;
   cursor: pointer;
 }
-.cell0{
+.cell-content{
   position: relative;
 }
-.cellz{
+.cell-cover{
   position: absolute;
   display: flex;
   width: 50px;
@@ -89,18 +89,41 @@ button:hover{
 .visible{
   background-color: greenyellow;
 }
+/*COLORES DE LAS CELDAS*/
 .c0{
-  background-color: rgb(188, 188, 250);
+  background-color: rgb(255, 255, 255);
 }
 .c1{
   background-color: #FCE4D6;
 }
+.c2{
+  background-color: #B4C6E7;
+}
+.c3{
+  background-color: #C6E0B4;
+}
+.c4{
+
+}
+.c5{
+
+}
+.c6{
+
+}
+.c7{
+
+}
+.c8{
+
+}
 .X{
-  background-color: red;
+  background-color: #fa955b;
 }
 .act{
   background-color: transparent !important;
 }
+/*Fin de seccion de colores*/
 
 .invisible{
   background-color: rgb(130, 130, 214);

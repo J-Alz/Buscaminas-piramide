@@ -1,22 +1,23 @@
 import { useState } from "react"
 
 
-export const Square = ({children, enabled,visible, updateMatrix, x, y, color }) => {
+export const Square = ({children, enabled,visible, updateMatrix, x, y, color, winner }) => {
 
 	const classCell = `cell ${enabled?'visible':'invisible'}  c${color} ${color === 'X' ? 'X' : ''}`;
 
 	//console.log(visible)
 
 	const handleClick = () => {
-		enabled && updateMatrix(x,y)
+		if(enabled && !winner)
+			updateMatrix(x,y)
 	}
 
 	return (
-		<div className="cell0">
+		<div className="cell-content">
 			<div  className={classCell}>
 				{enabled && children}
 			</div>
-			<div  className={`${enabled?'cellz':''} ${visible?'act':''}`  } onClick={handleClick}>
+			<div  className={`${enabled?'cell-cover':''} ${visible?'act':''}`  } onClick={handleClick}>
 
 			</div>
 		</div>
