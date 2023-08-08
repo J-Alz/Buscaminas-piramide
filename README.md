@@ -1,8 +1,7 @@
-# React + Vite
+# Busca-minas en forma de piramide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Es un pequeño programa de buscaminas en forma de piramida, en el cual se puede modificar la altura y la cantidad de minas
 
-Currently, two official plugins are available:
+![imagen buscaminas piramide](public\img\buscaminas.PNG)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
