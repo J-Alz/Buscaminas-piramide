@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { Square } from './components/Square';
 import { DIRECTIONS } from './constans';
-import { saveGameToStorage } from './storage';
+import { resetGameStorage, saveGameToStorage } from './storage';
 
 
 
 function App() {
   const [rows, setRows] = useState(8);
-  const [cells] = useState(rows * (2 * rows - 1))
-  const [cols, setCols] = useState(cells / rows)
-  const [cellMiddle,setCellMiddle] = useState((cols - 1) / 2)
+  //const [cells] = useState(rows * (2 * rows - 1))
+  const calcCols = () => (2 * rows - 1)
+  const [cols, setCols] = useState(calcCols)
+  const calcCellMiddle = () => (cols - 1) / 2
+  const [cellMiddle,setCellMiddle] = useState(calcCellMiddle)
   const [mines, setMines] = useState(7)
-  
+
   const gridRows = 'repeat('+ rows +',50px)'
   const gridColumns = 'repeat('+cols+',50px)'
 
@@ -88,10 +90,18 @@ function App() {
     })
   }
 
-  const resetGame = () => {
+  const ResetGame = () => {
+    if( !isNaN(mines) && !isNaN(rows)){
+      resetGameStorage()
 
-    //setMatrix(createMatrix)
-    
+      setRows(rows)
+      setCols(calcCols)
+      setCellMiddle(calcCellMiddle)
+      setMines(mines)
+      const newMatrix = createMatrix
+      setMatrix(newMatrix)
+
+    }
   }
 
   return (
@@ -99,17 +109,17 @@ function App() {
       <div className='title'>
         <h1>Buscaminas</h1>
       </div>
-      <form className='form'>
+      <div className='form' >
         <div>
-          <label htmlFor="">Altura:</label>
-          <input type="number" min="3" max="10" />
+          <label htmlFor="rows">Altura:</label>
+          <input type="number" min="3" max="10" id='rows' value={rows}/>
         </div>
         <div>
-          <label htmlFor="">Minas</label>
-          <input type="number" />
+          <label htmlFor="mines">Minas</label>
+          <input type="number" id='mines' value={mines}/>
         </div>
-        <button type='submit' value="Submit">Nuevo Juego</button>
-      </form>
+        <button>Nuevo Juego</button>
+      </div>
       <section className="table">
         <div className='terrain' style={{gridTemplateRows: gridRows, gridTemplateColumns: gridColumns}}>
         {
